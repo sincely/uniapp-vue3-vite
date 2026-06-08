@@ -1,6 +1,10 @@
 export default {
-  extends: ['stylelint-config-standard', 'stylelint-config-standard-vue', 'stylelint-config-recess-order'],
-  plugins: ['stylelint-order'],
+  extends: [
+    'stylelint-config-standard', // stylelint标准配置
+    'stylelint-config-standard-scss', // 配置 stylelint scss 插件
+    'stylelint-config-recess-order' // 对CSS声明进行排序
+  ],
+  plugins: ['stylelint-order', 'stylelint-scss'], // CSS 属性顺序规则插件
   overrides: [
     {
       files: ['**/*.(scss|css|vue|html)'],
@@ -59,5 +63,25 @@ export default {
     'comment-empty-line-before': 'never',
     // 处理小程序page标签不认识的问题
     'selector-type-no-unknown': [true, { ignoreTypes: ['page', 'radio', 'checkbox', 'scroll-view'] }]
-  }
+  },
+  overrides: [
+    {
+      files: ['**/*.(css|html|vue)'],
+      customSyntax: 'postcss-html',
+      rules: {
+        // 禁止未知的伪类选择器
+        'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['deep', 'global'] }],
+        // 禁止未知的伪元素选择器
+        'selector-pseudo-element-no-unknown': [true, { ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'] }]
+      }
+    },
+    {
+      files: ['*.scss', '**/*.scss'],
+      customSyntax: 'postcss-scss',
+      extends: ['stylelint-config-standard-scss'],
+      rules: {
+        'scss/dollar-variable-pattern': null
+      }
+    }
+  ]
 }
